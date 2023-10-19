@@ -1,18 +1,38 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import PostList from "./pages/PostList";
-import CreatePost from "./pages/CreatePost";
+import { useSelector, useDispatch } from "react-redux";
 import "./App.css";
 
 const App = () => {
-  return (
-      <Router>
+    const user = useSelector((state) => state);
+    const dispatch = useDispatch();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        dispatch({ type: "SET_USER", payload: { [name]: value } });
+    };
+
+    return (
         <div className="App">
-          <Route path="/" exact component={PostList} />
-          <Route path="/create" component={CreatePost} />
+            <input
+                type="text"
+                placeholder="Имя"
+                name="name"
+                value={user.name}
+                onChange={handleChange}
+            />
+            <input
+                type="number"
+                placeholder="Возраст"
+                name="age"
+                value={user.age}
+                onChange={handleChange}
+            />
+            <select name="gender" value={user.gender} onChange={handleChange}>
+                <option value="male">Мужчина</option>
+                <option value="female">Женщина</option>
+            </select>
         </div>
-      </Router>
-  );
+    );
 };
 
 export default App;
